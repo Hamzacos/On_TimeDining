@@ -1,10 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../Model/plat.dart';
 import '../Widget/home_nav_bar.dart';
 import '../Widget/items_widget.dart';
 
 
-class HomePage extends StatelessWidget{
+class MenuPage extends StatelessWidget{
+  final List<Plat> plats;
+  final String restaurantName;
+
+  const MenuPage({required this.plats, required this.restaurantName});
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +30,21 @@ class HomePage extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
                       child: Icon(
-                        Icons.sort_rounded,
+                        Icons.arrow_back_ios_new,
                         color: Colors.black,
-                        size: 35,
+                        size: 32,
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context,"CartPage");
+                      },
                       child: Icon(
-                        Icons.search,
+                        CupertinoIcons.cart_badge_plus,
                         color: Colors.black,
                         size: 35,
                       ),
@@ -45,7 +55,7 @@ class HomePage extends StatelessWidget{
               SizedBox(height: 30),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
-                  child: Text("Kool & Moot" , style: TextStyle(
+                  child: Text(restaurantName , style: TextStyle(
                     color: Colors.black,
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -55,7 +65,7 @@ class HomePage extends StatelessWidget{
               SizedBox(height: 5),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: Text("With khanz & Bnin" , style: TextStyle(
+                child: Text("Taste Of Heaven" , style: TextStyle(
                   color: Colors.black54,
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -70,7 +80,7 @@ class HomePage extends StatelessWidget{
                 labelColor: Color(0xFFFF724C),
                 unselectedLabelColor: Colors.grey,
                 tabs: [
-                  Tab(text: "Maakouda"),
+                  Tab(text: "Burger"),
                   Tab(text: "Pizza"),
                   Tab(text: "Cheese"),
                   Tab(text: "Passta"),
@@ -80,10 +90,10 @@ class HomePage extends StatelessWidget{
                 flex: 1,
                 child: TabBarView(
                   children: [
-                    ItemsWidget(),
-                    ItemsWidget(),
-                    ItemsWidget(),
-                    ItemsWidget(),
+                    ItemsWidget(plats: plats),
+                    ItemsWidget(plats: plats),
+                    ItemsWidget(plats: plats),
+                    ItemsWidget(plats: plats),
                   ],
                 ),
               ),

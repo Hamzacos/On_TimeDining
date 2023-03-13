@@ -6,7 +6,7 @@ class SingleItemNavBar extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Container(
-      height: 80,
+      height: 40,
       padding:EdgeInsets.symmetric(horizontal: 15),
       /*decoration: BoxDecoration(
         color: Colors.white,
@@ -24,7 +24,7 @@ class SingleItemNavBar extends StatelessWidget{
           Column(children: [
             Text("Total Price",style: TextStyle(
               color: Colors.black54,
-              fontSize: 23,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
             ),
@@ -32,7 +32,7 @@ class SingleItemNavBar extends StatelessWidget{
             Text("30DH",
               style: TextStyle(
                 color: Colors.black54,
-                fontSize: 22,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -68,7 +68,7 @@ class SingleItemNavBar extends StatelessWidget{
                     child: Icon(
                       CupertinoIcons.cart_fill,
                       color: Colors.white,
-                        size: 30
+                        size: 20
                     ),
                   ),
                  // Icon(CupertinoIcons.cart_fill,color: Colors.white,size: 30,),

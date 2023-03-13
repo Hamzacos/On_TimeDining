@@ -4,9 +4,9 @@ import '../Model/order.dart';
 
 class OrderDAO {
 
-  static final OrderDAO instance = OrderDAO._privateConstructor();
+  //static final OrderDAO instance = OrderDAO._privateConstructor();
 
-  OrderDAO._privateConstructor();
+  //OrderDAO._privateConstructor();
 
   Future<int> insert(Order order) async {
     final db = await DatabaseHelper.instance.database;
@@ -23,5 +23,11 @@ class OrderDAO {
     final db = await DatabaseHelper.instance.database;
     return await db.delete(DatabaseHelper.tableRestaurant,
         where: '${DatabaseHelper.columnRestaurantId} = ?', whereArgs: [id]);
+  }
+
+  Future<List<Order>> getAllOrder() async {
+    final db = await DatabaseHelper.instance.database;
+    final results = await db.query(DatabaseHelper.tableOrder);
+    return results.map((map) => Order.fromMap(map)).toList();
   }
 }

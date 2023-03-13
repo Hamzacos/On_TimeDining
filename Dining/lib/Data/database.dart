@@ -15,6 +15,7 @@ class DatabaseHelper {
   static final columnRestaurantId = 'id';
   static final columnRestaurantName = 'name';
   static final columnRestaurantAddress = 'address';
+  static final columnRestaurantImagePath = 'imagePath';
 
   static final tableOrder = 'orders';
   static final columnOrderId = 'id';
@@ -25,8 +26,10 @@ class DatabaseHelper {
 
   static final tableOrderItem = 'order_item';
   static final columnOrderItemId = 'id';
+  static final columnOrderItemName = 'name';
   static final columnOrderItemQuantity = 'quantity';
   static final columnOrderItemPrice = 'price';
+  static final columnOrderItemImagePath = 'imagePath';
   static final columnOrderItemOrderId = 'order_id';
   static final columnOrderItemPlatId = 'plat_id';
 
@@ -36,6 +39,7 @@ class DatabaseHelper {
   static final columnPlatDescription = 'description';
   static final columnPlatPrice = 'price';
   static final columnPlatRestaurantId = 'restaurant_id';
+  static final columnPlatImagePath = 'imagePath';
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -61,7 +65,7 @@ class DatabaseHelper {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $tableUser (
-        $columnUserId INTEGER PRIMARY KEY,
+        $columnUserId INTEGER PRIMARY KEY AUTOINCREMENT,
         $columnUserEmail TEXT NOT NULL,
         $columnUserPhone TEXT NOT NULL,
         $columnUserName TEXT NOT NULL
@@ -70,15 +74,16 @@ class DatabaseHelper {
 
     await db.execute('''
       CREATE TABLE $tableRestaurant (
-  $columnRestaurantId INTEGER PRIMARY KEY,
+  $columnRestaurantId INTEGER PRIMARY KEY AUTOINCREMENT,
   $columnRestaurantName TEXT NOT NULL,
-  $columnRestaurantAddress TEXT NOT NULL
+  $columnRestaurantAddress TEXT NOT NULL,
+  $columnRestaurantImagePath TEXT NOT NULL
 )
 ''');
 
     await db.execute('''
       CREATE TABLE $tableOrder (
-        $columnOrderId INTEGER PRIMARY KEY,
+        $columnOrderId INTEGER PRIMARY KEY AUTOINCREMENT,
         $columnOrderDate TEXT NOT NULL,
         $columnOrderTotalPrice REAL NOT NULL,
         $columnOrderUserId INTEGER NOT NULL,
@@ -90,11 +95,13 @@ class DatabaseHelper {
 
     await db.execute('''
       CREATE TABLE $tableOrderItem (
-        $columnOrderItemId INTEGER PRIMARY KEY,
+        $columnOrderItemId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $columnOrderItemName TEXT NOT NULL,
         $columnOrderItemQuantity INTEGER NOT NULL,
         $columnOrderItemPrice REAL NOT NULL,
         $columnOrderItemOrderId INTEGER NOT NULL,
         $columnOrderItemPlatId INTEGER NOT NULL,
+        $columnOrderItemImagePath TEXT NOT NULL,
         FOREIGN KEY ($columnOrderItemOrderId) REFERENCES $tableOrder ($columnOrderId),
         FOREIGN KEY ($columnOrderItemPlatId) REFERENCES $tablePlat ($columnPlatId)
       )
@@ -102,11 +109,12 @@ class DatabaseHelper {
 
     await db.execute('''
       CREATE TABLE $tablePlat (
-        $columnPlatId INTEGER PRIMARY KEY,
+        $columnPlatId INTEGER PRIMARY KEY AUTOINCREMENT,
         $columnPlatName TEXT NOT NULL,
         $columnPlatDescription TEXT NOT NULL,
         $columnPlatPrice REAL NOT NULL,
         $columnPlatRestaurantId INTEGER NOT NULL,
+        $columnRestaurantImagePath TEXT NOT NULL,
         FOREIGN KEY ($columnPlatRestaurantId) REFERENCES $tableRestaurant ($columnRestaurantId)
       )
     ''');
@@ -136,6 +144,13 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> query(String table, String whereClause, List<dynamic> whereArgs) async {
     final db = await instance.database;
     return await db.query(table, where: whereClause, whereArgs: whereArgs);
+  }
+
+  Future<void> DeleteDatabase() async {
+    final documentsDirectory = await getDatabasesPath();
+    final path = join(documentsDirectory, _databaseName);
+    await deleteDatabase(path);
+    _database = null;
   }
 
 }

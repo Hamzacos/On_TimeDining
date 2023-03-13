@@ -3,9 +3,9 @@ import '../Model/orderItem.dart';
 
 class OrderDAOItem{
 
-  static final OrderDAOItem instance = OrderDAOItem._privateConstructor();
+  //static final OrderDAOItem instance = OrderDAOItem._privateConstructor();
 
-  OrderDAOItem._privateConstructor();
+  //OrderDAOItem._privateConstructor();
 
   Future<int> insert(OrderItem orderItem) async {
     final db = await DatabaseHelper.instance.database;
@@ -22,5 +22,11 @@ class OrderDAOItem{
     final db = await DatabaseHelper.instance.database;
     return await db.delete(DatabaseHelper.tableOrderItem,
         where: '${DatabaseHelper.columnOrderItemId} = ?', whereArgs: [id]);
+  }
+
+  Future<List<OrderItem>> getAllItem() async {
+    final db = await DatabaseHelper.instance.database;
+    final results = await db.query(DatabaseHelper.tableOrderItem);
+    return results.map((map) => OrderItem.fromMap(map)).toList();
   }
 }
